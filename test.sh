@@ -1,8 +1,24 @@
-pwd
-output=$(./run.sh <(cat - <<<"INPUT") >(cat -) >/dev/null)
-cat - <<<"$output"
+declare -r path=$(dirname $(realpath "$0"))
 
-if [[ "$output" != "ANSWERINPUT" ]]
-then
-    exit 1
-fi
+declare -i err=0
+
+for file in "$path"/examples/example{0..20}.txt
+do
+    echo "$file"
+    cat "$file"
+    declare output=$(./run.sh "$file" >(cat -) >/dev/null)
+    declare expected="${file%.*}.expected.txt"
+    echo "$output"
+    echo "$expected"
+
+    if [[ "$output" == $(cat "$expected") ]]
+    then
+        echo -e "[OK]\n"
+    else
+        wdiff <(cat - <<<"$output") "$expected"
+        echo -e "[FAIL]\n"
+        ((err++))
+    fi
+done
+
+exit $err
