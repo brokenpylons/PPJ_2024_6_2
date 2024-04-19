@@ -1,1 +1,1 @@
-# Razčlenjevalnik in evaluator 2
+# Razčlenjevalnik in evaluator 6.2
