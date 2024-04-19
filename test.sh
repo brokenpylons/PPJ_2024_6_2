@@ -8,8 +8,6 @@ do
     cat "$file"
     declare output=$(./run.sh "$file" >(cat -) >/dev/null)
     declare expected="${file%.*}.expected.txt"
-    echo "$output"
-    echo "$expected"
 
     if [[ "$output" == $(cat "$expected") ]]
     then
